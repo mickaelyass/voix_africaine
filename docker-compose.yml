@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=votre-clé-secrète-complexe
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB_NAME=voix_africaine
+      - CLOUDINARY_CLOUD_NAME=dgpfxt5an
+      - CLOUDINARY_API_KEY=265767778693966
+      - CLOUDINARY_API_SECRET=o8yA600OB2zjBMtemBP8wxIfGGg
+
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+   mongodb_data:
+
