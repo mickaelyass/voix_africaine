@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     # Configuration MongoDB
     #MONGO_URI: str = "mongodb://localhost:27017"
     MONGO_DB_NAME: str = "voix_africaine"
+    MONGO_URL: str
 
   
     GOOGLE_CLIENT_ID: Optional[str] = None
