@@ -8,9 +8,17 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     API_PREFIX: str = "/api"
     # Configuration MongoDB
-    MONGO_URI: str = "mongodb://localhost:27017"
-    MONGO_DB_NAME: str = "voix_africaine"
+    #MONGO_URI: str = "mongodb://localhost:27017"
+    #MONGO_DB_NAME: str = "voix_africaine"
 
+    MONGO_URI: str = (
+            "mongodb://"
+            "${MONGO_INITDB_ROOT_USERNAME}:"
+            "${MONGO_INITDB_ROOT_PASSWORD}@"
+            "${RAILWAY_TCP_PROXY_DOMAIN}:"
+            "${RAILWAY_TCP_PROXY_PORT}"
+        )
+    MONGO_DB_NAME: str = "voix_africaine"
     # Configuration Google OAuth (optionnel)
     GOOGLE_CLIENT_ID: Optional[str] = None
     GOOGLE_CLIENT_SECRET: Optional[str] = None
