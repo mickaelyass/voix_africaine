@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.config import settings
 
-client = AsyncIOMotorClient(settings.MONGO_URI)
+client = AsyncIOMotorClient(settings.MONGO_URL)
 db = client[settings.MONGO_DB_NAME]  # Accès direct à la base de données
 
 async def init_db():
