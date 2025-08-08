@@ -11,13 +11,7 @@ class Settings(BaseSettings):
     #MONGO_URI: str = "mongodb://localhost:27017"
     #MONGO_DB_NAME: str = "voix_africaine"
 
-    MONGO_URI: str = (
-            "mongodb://"
-            "${MONGO_INITDB_ROOT_USERNAME}:"
-            "${MONGO_INITDB_ROOT_PASSWORD}@"
-            "${RAILWAY_TCP_PROXY_DOMAIN}:"
-            "${RAILWAY_TCP_PROXY_PORT}"
-        )
+    MONGO_URI: str
     MONGO_DB_NAME: str = "voix_africaine"
     # Configuration Google OAuth (optionnel)
     GOOGLE_CLIENT_ID: Optional[str] = None
