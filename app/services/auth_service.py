@@ -23,7 +23,7 @@ async def register_user(user_data: UserCreate):
         "full_name": user_data.full_name,
         "hashed_password": get_password_hash(user_data.password),
         "disabled": False,
-        "role": "admin",  # Rôle par défaut
+        "role": "user",  # Rôle par défaut
         "created_at": datetime.utcnow()
     }
 
