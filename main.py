@@ -20,7 +20,8 @@ async def startup_db():
     init_cloudinary()
     await init_db()
     
-
+# Configuration des middlewares
+add_middleware(app)
 
 # Inclusion des routeurs avec des préfixes et tags pour une meilleure organisation
 app.include_router(auth.router)
@@ -28,5 +29,4 @@ app.include_router(livres.router)
 app.include_router(chapitres.router)
 app.include_router(lectures.router)
 
-# Configuration des middlewares
-add_middleware(app)
+
