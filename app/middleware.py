@@ -17,7 +17,7 @@ class HTTPSEnforcerMiddleware(BaseHTTPMiddleware):
 
 def add_middleware(app: FastAPI):
     # Désactive le middleware de redirection HTTPS par défaut
-     app.add_middleware(HTTPSRedirectMiddleware)  # À commenter ou supprimer
+    app.add_middleware(HTTPSRedirectMiddleware)  # À commenter ou supprimer
     
     # Ajoute notre middleware personnalisé
     # app.add_middleware(HTTPSEnforcerMiddleware)
