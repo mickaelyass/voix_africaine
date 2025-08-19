@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 
 from app.cloudinary_config import init_cloudinary
-from app.routes import auth, livres, chapitres, lectures
+from app.routes import auth, livres, chapitres, lectures,comment
 from app.database import init_db
 from app.middleware import add_middleware
 from app.config import settings
@@ -21,12 +21,12 @@ async def startup_db():
     await init_db()
     
 
-
 # Inclusion des routeurs avec des préfixes et tags pour une meilleure organisation
 app.include_router(auth.router)
 app.include_router(livres.router)
 app.include_router(chapitres.router)
 app.include_router(lectures.router)
+app.include_router(comment.router)
 
 # Configuration des middlewares
 add_middleware(app)

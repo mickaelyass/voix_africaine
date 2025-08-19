@@ -39,10 +39,13 @@ class UserInDB(UserBase):
         arbitrary_types_allowed=True
     )
         
-class UserPublic(UserBase):
+class UserPublic(BaseModel):
     id: str
     role: Role
     created_at: datetime
+    email: EmailStr
+    full_name: str = Field(..., min_length=1, max_length=100)
+
 
 class Livre(BaseModel):
     id: str = Field(..., description="Identifiant unique du livre")
@@ -84,3 +87,52 @@ class ChapitrePublic(Chapitre):
             "audio_url": self.audio_url if self.is_public else None,
             "duration_sec": self.duration_sec
         }
+class CommentaireBase(BaseModel):
+    """Modèle de base pour un commentaire"""
+    contenu: str = Field(..., min_length=1, max_length=1000, description="Texte du commentaire")
+    timestamp: float = Field(..., description="Position temporelle dans l'audio (en secondes)")
+
+class CommentaireCreate(CommentaireBase):
+    """Modèle pour la création d'un commentaire"""
+    pass
+
+class CommentaireInDB(CommentaireBase):
+    """Modèle complet stocké en base de données"""
+    id: Optional[str] = Field(..., alias="_id")
+    chapitre_id: str = Field(..., description="ID du chapitre audio associé")
+    user_id: str = Field(..., description="ID de l'utilisateur qui a posté le commentaire")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    is_public: bool = Field(default=True, description="Si le commentaire est visible par tous")
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True
+    )
+
+class CommentairePublic(CommentaireBase):
+    """Version publique d'un commentaire (sans données sensibles)"""
+    id: str = Field(..., alias="_id")
+    user_info: Optional[UserPublic] = Field(..., description="Infos publiques de l'utilisateur")
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True
+    )
+
+    @model_serializer
+    def serialize_model(self):
+        return {
+            "id": self.id,
+            "contenu": self.contenu,
+            "timestamp": self.timestamp,
+            "user_info": self.user_info,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+        }
+
+class ChapitreWithComments(ChapitrePublic):
+    """Extension du modèle Chapitre avec les commentaires"""
+    commentaires: List[CommentairePublic] = Field(default_factory=list)

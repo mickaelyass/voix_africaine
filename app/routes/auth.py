@@ -6,7 +6,7 @@ from app.models import Token, UserPublic, UserCreate, UserInDB
 from app.services.auth_service import (
     register_user,
     authenticate_for_token,
-    get_current_user_profile, get_all_user,
+    get_current_user_profile, get_all_user, _get_user_public_info,
 
 )
 
@@ -39,3 +39,7 @@ async def google_auth_route(token: str):
 @router.get("/",response_model=list[UserInDB])
 async def alluser():
     return await get_all_user()
+
+@router.get("/{user_id}", response_model=UserPublic)
+async def get_user(user_id: str):
+    return await _get_user_public_info(user_id)

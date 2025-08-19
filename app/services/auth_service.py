@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 
+from bson import ObjectId
 from fastapi import HTTPException,status
 
 from app.database import db
-from app.models import UserCreate,UserInDB
+from app.models import UserCreate, UserInDB, UserPublic
 from app.config import settings
 from app.auth_utils import (
     get_password_hash,
@@ -23,7 +24,7 @@ async def register_user(user_data: UserCreate):
         "full_name": user_data.full_name,
         "hashed_password": get_password_hash(user_data.password),
         "disabled": False,
-        "role": "user",  # Rôle par défaut
+        "role": "admin",  # Rôle par défaut
         "created_at": datetime.utcnow()
     }
 
@@ -81,4 +82,28 @@ async def migrate_existing_users():
     await db["users"].update_many(
         {"role": {"$exists": False}},
         {"$set": {"role": "user"}}
+    )
+
+
+async def _get_user_public_info(user_id: str) -> UserPublic:
+    """Récupère les infos publiques d'un utilisateur"""
+    if not ObjectId.is_valid(user_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="ID utilisateur invalide"
+        )
+
+    user = await db["users"].find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Utilisateur non trouvé"
+        )
+
+    return UserPublic(
+        id=str(user["_id"]),
+        email=user.get("email", ""),
+        full_name=user.get("full_name", ""),
+        role=user.get("role", "user"),
+        created_at=user["created_at"]
     )
