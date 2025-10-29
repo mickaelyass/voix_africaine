@@ -20,7 +20,7 @@ def add_middleware(app: FastAPI):
     #app.add_middleware(HTTPSRedirectMiddleware)  # À commenter ou supprimer
     
     # Ajoute notre middleware personnalisé
-    app.add_middleware(HTTPSEnforcerMiddleware)
+    # app.add_middleware(HTTPSEnforcerMiddleware)
     
     # Configuration CORS
     app.add_middleware(

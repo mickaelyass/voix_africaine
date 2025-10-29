@@ -8,8 +8,9 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     API_PREFIX: str = "/api"
     # Configuration MongoDB
-    MONGO_URL: str = "mongodb://localhost:27017"
+    MONGO_URL: str = "mongodb+srv://bonheur:yass2001@cluster0.oerjrcp.mongodb.net/?appName=Cluster0"
     MONGO_DB_NAME: str = "voix_africaine"
+
     #MONGO_URL: str
 
   
